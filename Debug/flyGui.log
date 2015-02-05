@@ -1,0 +1,29 @@
+﻿Build started 5/13/2014 9:26:35 AM.
+     1>Project "C:\workspace_c++\flyGui\flyGui\flyGui.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Creating "Debug\flyGui.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         All outputs are up-to-date.
+         All outputs are up-to-date.
+       CoreResGen:
+         No resources are out of date with respect to their source files. Skipping resource generation.
+       ResourceCompile:
+         All outputs are up-to-date.
+       Link:
+         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\workspace_c++\flyGui\Debug\flyGui.exe" /INCREMENTAL:NO /NOLOGO /ASSEMBLYRESOURCE:Debug\flyGui.Form1.resources /INCLUDE:"__DllMainCRTStartup@12" /MANIFEST /ManifestFile:"Debug\flyGui.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\workspace_c++\flyGui\Debug\flyGui.pdb" /ASSEMBLYDEBUG /SUBSYSTEM:WINDOWS /TLBID:1 /ENTRY:"main" /DYNAMICBASE /FIXED:NO /NXCOMPAT /MACHINE:X86 Debug\app.res
+         Debug\AssemblyInfo.obj
+         Debug\flyGui.obj
+         Debug\getbaseaddress.obj
+         Debug\setdebug.obj
+         Debug\stdafx.obj
+         flyGui.vcxproj -> C:\workspace_c++\flyGui\Debug\flyGui.exe
+       Manifest:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"C:\workspace_c++\flyGui\Debug\flyGui.exe;#1" /manifest Debug\flyGui.exe.intermediate.manifest "c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\Include\Manifest\dpiaware.manifest"
+       FinalizeBuildStatus:
+         Deleting file "Debug\flyGui.unsuccessfulbuild".
+         Touching "Debug\flyGui.lastbuildstate".
+     1>Done Building Project "C:\workspace_c++\flyGui\flyGui\flyGui.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.40
