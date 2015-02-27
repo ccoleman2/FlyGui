@@ -10,7 +10,7 @@ DWORD getbaseaddress()
 	moduleentry32WoW.dwSize = sizeof(MODULEENTRY32W);
 	HANDLE handleWoW;
 
-	HWND windowHandle = FindWindow(NULL, L"Heroes of the Storm");
+	HWND windowHandle = FindWindow(NULL, L"World of Warcraft");
 	error = GetLastError();
 	if (windowHandle == NULL)
 	{
