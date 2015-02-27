@@ -1,0 +1,15 @@
+*.obj
+*.bi
+*.pdb
+*.tlog
+*.exe
+*.Cache
+*.sdf
+*.opensdf
+*.res
+*.aps
+Debug/flyGui.exe.metagen
+*.resources
+Debug/flyGui.log
+*.pch
+ipch/flygui-c7eab33b/flygui-4126871c.ipch
