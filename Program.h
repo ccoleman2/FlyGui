@@ -19,14 +19,11 @@ public:
 	HANDLE programHandle;
 
 // methods
+	void setName(wstring);
 	wstring getName();
 	DWORD getBaseAddress();
-	//DWORD getProcessId();
-	//HWND getWindowHandle();
 	HANDLE getProgramHandle();
-	//bool getDebugPrivilegesEnabled();
-	void setName(wstring);
-	void setDebugPrivilegesEnabled(bool);
+	bool setDebugPrivilegesEnabled();
 	void setAttached(bool);
 
 };

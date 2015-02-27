@@ -1,4 +1,5 @@
 #pragma once
+//#include "Program.h"
 
 namespace flyGui {
 
@@ -8,6 +9,8 @@ namespace flyGui {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
+
+	//Program program;
 
 	public ref class Form1 : public System::Windows::Forms::Form
 	{

@@ -5,95 +5,99 @@
 
 using namespace std;
 
+WoW program;
+int userAction;
+
 // ATTACH
 System::Void flyGui::Form1::button1_Click(System::Object^  sender, System::EventArgs^  e)
 {
-	WoW wowObject = WoW();
+	program = WoW();
 
-	switch(wowObject.getBaseAddress())
+	switch (program.getBaseAddress())
 	{
 	case 1:
-		MessageBox::Show("(1) error " + GetLastError().ToString());
+		MessageBox::Show("FindWindow() Failed.");
 		return;
 	case 2:
-		MessageBox::Show("(2) error " + GetLastError().ToString());
+		MessageBox::Show("GetWindowThreadProcessId() Failed.");
 		return;
 	case 3:
-		MessageBox::Show("(3) error " + GetLastError().ToString());
+		MessageBox::Show("handleWoW == INVALID_HANDLE_VALUE");
 		return;
 	case 4:
-		MessageBox::Show("(4) error " + GetLastError().ToString());
+		MessageBox::Show("Module32First returned FALSE");
+		return;
+	case 5:
+		MessageBox::Show("setDebugPrivilegesEnabled() returned FALSE");
 		return;
 	}
 
-	if (wowObject.getProgramHandle() == NULL)
+	if (program.getProgramHandle() == NULL)
 	{
 		MessageBox::Show("OpenProcess() Failed.");
 		return;
 	}
 	MessageBox::Show("Successfully attached.");
+	program.setAttached(true);
 }
 
 //// FOV
 System::Void flyGui::Form1::button2_Click(System::Object^  sender, System::EventArgs^  e)
 {
-//	if (attached == 0)
-//	{
-//		MessageBox::Show("Please attach to WoW first ");
-//		return;
-//	}
-//
-//	DWORD WoWbase_PLUS_D5153C;
-//	void * stepA = new DWORD;
-//	void * CameraPtr = new DWORD;
-//	void * stepC = new DWORD;
-//
-//	WoWbase_PLUS_D5153C = WoWbaseaddress + 13964604; // 13964604 is decimal notation of D5153C
-//
-//	int goodA = ReadProcessMemory(actualWoWhandle, (void*)WoWbase_PLUS_D5153C, &stepA, 4, 0);
-//	error = GetLastError();
-//	if (goodA == 0)
-//	{
-//		MessageBox::Show("Step A: ReadProcessMemory() failed. GetLastError() produced: " + error);
-//		return;
-//	}
-//
-//	stepA = (char*)stepA + 0x8150; // Adds 0x8150 to pointer
-//	int goodB = ReadProcessMemory(actualWoWhandle, stepA, &CameraPtr, 4, 0);
-//	error = GetLastError();
-//	if (goodB == 0)
-//	{
-//		MessageBox::Show("Step B: ReadProcessMemory() failed. GetLastError() produced: " + error);
-//		return;
-//	}
-//
-//	CameraPtr = (char*)CameraPtr + 0x38; // Adds 0x38 to pointer
-//	int goodC = ReadProcessMemory(actualWoWhandle, CameraPtr, &stepC, 4, 0);
-//	error = GetLastError();
-//	if (goodC == 0)
-//	{
-//		MessageBox::Show("Step C: ReadProcessMemory() failed. GetLastError() produced: " + error);
-//		return;
-//	}
-//
-//	float newFoV = (float)Convert::ToDouble(this->textBox1->Text);
-//	int success = WriteProcessMemory(actualWoWhandle, CameraPtr, &newFoV, 4, 0);
-//	error = GetLastError();
-//	if (success == 0)
-//	{
-//		MessageBox::Show("4: Did not write FOV successfully. GetLastError() produced: " + error);
-//		return;
-//	}
+
+	if (program.attached == FALSE)
+	{
+		MessageBox::Show("Please attach to the process first");
+		return;
+	}
+
+	DWORD WoWbase_PLUS_D5153C;
+	void * stepA = new DWORD;
+	void * CameraPtr = new DWORD;
+	void * stepC = new DWORD;
+
+	WoWbase_PLUS_D5153C = program.getBaseAddress() + 14885016; // 14885016 is decimal notation of E32098
+
+	int goodA = ReadProcessMemory(program.getProgramHandle(), (void*)WoWbase_PLUS_D5153C, &stepA, 4, 0);
+	if (goodA == 0)
+	{
+		MessageBox::Show("Step A: ReadProcessMemory() failed. GetLastError() produced: " + GetLastError().ToString());
+		return;
+	}
+
+	stepA = (char*)stepA + 0x7610; // Adds 0x7610 to pointer
+	int goodB = ReadProcessMemory(program.getProgramHandle(), stepA, &CameraPtr, 4, 0);
+	if (goodB == 0)
+	{
+		MessageBox::Show("Step B: ReadProcessMemory() failed. GetLastError() produced: " + GetLastError().ToString());
+		return;
+	}
+
+	CameraPtr = (char*)CameraPtr + 0x38; // Adds 0x38 to pointer
+	int goodC = ReadProcessMemory(program.getProgramHandle(), CameraPtr, &stepC, 4, 0);
+	if (goodC == 0)
+	{
+		MessageBox::Show("Step C: ReadProcessMemory() failed. GetLastError() produced: " + GetLastError().ToString());
+		return;
+	}
+
+	float newFoV = (float)Convert::ToDouble(this->textBox1->Text);
+	int success = WriteProcessMemory(program.getProgramHandle(), CameraPtr, &newFoV, 4, 0);
+	if (success == 0)
+	{
+		MessageBox::Show("4: Did not write FOV successfully. GetLastError() produced: " + GetLastError().ToString());
+		return;
+	}
 }
 
 // ZOOM
 System::Void flyGui::Form1::button3_Click(System::Object^  sender, System::EventArgs^  e)
 {
-//	if (attached == 0)
-//	{
-//		MessageBox::Show("Please attach to WoW first");
-//		return;
-//	}
+	if (program.attached == FALSE)
+	{
+		MessageBox::Show("Please attach to WoW first");
+		return;
+	}
 //
 //	DWORD WoWbase_PLUS_D5153C;
 //	void * stepA = new DWORD;
@@ -140,18 +144,18 @@ System::Void flyGui::Form1::button3_Click(System::Object^  sender, System::Event
 // TERRAIN
 System::Void flyGui::Form1::checkBox1_CheckedChanged(System::Object^  sender, System::EventArgs^  e)
 {
-//	if (attached == 0)
-//	{
-//		if (userAction == 1)
-//		{
-//			userAction = 0;
-//			checkBox1->Checked = false;
-//			MessageBox::Show("Please attach to WoW first");
-//			return;
-//		}
-//		userAction = 1;
-//		return;
-//	}
+	if (program.attached == FALSE)
+	{
+		if (userAction == 1)
+		{
+			userAction = 0;
+			checkBox1->Checked = false;
+			MessageBox::Show("Please attach to WoW first");
+			return;
+		}
+		userAction = 1;
+		return;
+	}
 //	if (buttonone == 0)
 //	{
 //		currentRender = currentRender - 0x2;
@@ -183,18 +187,18 @@ System::Void flyGui::Form1::checkBox1_CheckedChanged(System::Object^  sender, Sy
 // M2
 System::Void flyGui::Form1::checkBox2_CheckedChanged(System::Object^  sender, System::EventArgs^  e)
 {
-//	if (attached == 0)
-//	{
-//		if (userAction == 1)
-//		{
-//			userAction = 0;
-//			checkBox2->Checked = false;
-//			MessageBox::Show("Please attach to WoW first");
-//			return;
-//		}
-//		userAction = 1;
-//		return;
-//	}
+	if (program.attached == FALSE)
+	{
+		if (userAction == 1)
+		{
+			userAction = 0;
+			checkBox2->Checked = false;
+			MessageBox::Show("Please attach to WoW first");
+			return;
+		}
+		userAction = 1;
+		return;
+	}
 //	if (buttontwo == 0)
 //	{
 //		currentRender = currentRender - 0x1;
@@ -226,18 +230,18 @@ System::Void flyGui::Form1::checkBox2_CheckedChanged(System::Object^  sender, Sy
 // WMO
 System::Void flyGui::Form1::checkBox3_CheckedChanged(System::Object^  sender, System::EventArgs^  e)
 {
-//	if (attached == 0)
-//	{
-//		if (userAction == 1)
-//		{
-//			userAction = 0;
-//			checkBox3->Checked = false;
-//			MessageBox::Show("Please attach to WoW first");
-//			return;
-//		}
-//		userAction = 1;
-//		return;
-//	}
+	if (program.attached == FALSE)
+	{
+		if (userAction == 1)
+		{
+			userAction = 0;
+			checkBox3->Checked = false;
+			MessageBox::Show("Please attach to WoW first");
+			return;
+		}
+		userAction = 1;
+		return;
+	}
 //	if (buttonthree == 0)
 //	{
 //		currentRender = currentRender - 0x20;
@@ -269,18 +273,18 @@ System::Void flyGui::Form1::checkBox3_CheckedChanged(System::Object^  sender, Sy
 // LIQUID
 System::Void flyGui::Form1::checkBox4_CheckedChanged(System::Object^  sender, System::EventArgs^  e)
 {
-//	if (attached == 0)
-//	{
-//		if (userAction == 1)
-//		{
-//			userAction = 0;
-//			checkBox4->Checked = false;
-//			MessageBox::Show("Please attach to WoW first");
-//			return;
-//		}
-//		userAction = 1;
-//		return;
-//	}
+	if (program.attached == FALSE)
+	{
+		if (userAction == 1)
+		{
+			userAction = 0;
+			checkBox4->Checked = false;
+			MessageBox::Show("Please attach to WoW first");
+			return;
+		}
+		userAction = 1;
+		return;
+	}
 //	if (buttonfour == 0)
 //	{
 //		currentRender = currentRender - 0x200;
@@ -312,18 +316,18 @@ System::Void flyGui::Form1::checkBox4_CheckedChanged(System::Object^  sender, Sy
 // WIREFRAME
 System::Void flyGui::Form1::checkBox5_CheckedChanged(System::Object^  sender, System::EventArgs^  e)
 {
-//	if (attached == 0)
-//	{
-//		if (userAction == 1)
-//		{
-//			userAction = 0;
-//			checkBox5->Checked = false;
-//			MessageBox::Show("Please attach to WoW first");
-//			return;
-//		}
-//		userAction = 1;
-//		return;
-//	}
+	if (program.attached == FALSE)
+	{
+		if (userAction == 1)
+		{
+			userAction = 0;
+			checkBox5->Checked = false;
+			MessageBox::Show("Please attach to WoW first");
+			return;
+		}
+		userAction = 1;
+		return;
+	}
 //	if (buttonfive == 0)
 //	{
 //		currentRender = currentRender + 0x08000000;
@@ -355,18 +359,18 @@ System::Void flyGui::Form1::checkBox5_CheckedChanged(System::Object^  sender, Sy
 // COLLISION
 System::Void flyGui::Form1::checkBox6_CheckedChanged(System::Object^  sender, System::EventArgs^  e)
 {
-//	if (attached == 0)
-//	{
-//		if (userAction == 1)
-//		{
-//			userAction = 0;
-//			checkBox6->Checked = false;
-//			MessageBox::Show("Please attach to WoW first");
-//			return;
-//		}
-//		userAction = 1;
-//		return;
-//	}
+	if (program.attached == FALSE)
+	{
+		if (userAction == 1)
+		{
+			userAction = 0;
+			checkBox6->Checked = false;
+			MessageBox::Show("Please attach to WoW first");
+			return;
+		}
+		userAction = 1;
+		return;
+	}
 //	if (buttonsix == 0)
 //	{
 //		currentRender = currentRender + 0x04000000;

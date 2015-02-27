@@ -45,6 +45,10 @@ DWORD Program::getBaseAddress(){
 		return 4;
 	}
 
+	if (setDebugPrivilegesEnabled() == FALSE){
+		return 5;
+	}
+
 	baseAddress = (DWORD)moduleentry32.modBaseAddr;
 	return baseAddress;
 }
@@ -54,7 +58,7 @@ HANDLE Program::getProgramHandle(){
 	return programHandle;
 }
 
-void Program::setDebugPrivilegesEnabled(bool debugPrivilegesEnabled){
+bool Program::setDebugPrivilegesEnabled(){
 	HANDLE              hToken;
 	LUID                SeDebugNameValue;
 	TOKEN_PRIVILEGES    TokenPrivileges;
@@ -74,15 +78,26 @@ void Program::setDebugPrivilegesEnabled(bool debugPrivilegesEnabled){
 			else
 			{
 				CloseHandle(hToken);
+				debugPrivilegesEnabled = false;
+				return false;
 			}
 		}
 		else
 		{
 			CloseHandle(hToken);
+			debugPrivilegesEnabled = false;
+			return false;
 		}
 	}
 	else
 	{
+		debugPrivilegesEnabled = false;
+		return false;
 	}
-	this->debugPrivilegesEnabled = debugPrivilegesEnabled;
+	debugPrivilegesEnabled = true;
+	return true;
+}
+
+void Program::setAttached(bool attached){
+	this->attached = attached;
 }
