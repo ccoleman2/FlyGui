@@ -4,16 +4,6 @@
 
 using namespace flyGui;	
 
-HWND windowHandle;
-HANDLE actualWoWhandle;
-DWORD WoWprocessID;
-DWORD WoWbaseaddress;
-DWORD currentRender = 0x00013FFF;
-int error;
-int attached = 0;
-int buttonone, buttontwo, buttonthree, buttonfour, buttonfive, buttonsix = 0;
-int userAction = 1;
-
 [STAThreadAttribute]
 int main(array<System::String ^> ^args)
 {

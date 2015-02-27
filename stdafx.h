@@ -4,8 +4,15 @@
 #pragma once
 #pragma comment(lib, "user32.lib")
 #pragma comment(lib, "advapi32.lib")
+
 //#include <afx.h>
 #include <windows.h>
 #include "Form1.h"
 #include <TlHelp32.h>
+
 // TODO: reference additional headers your program requires here
+#include <string>
+#include <iostream>
+#include "Program.h"
+
+using namespace std;
