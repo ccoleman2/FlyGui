@@ -12,5 +12,6 @@ public:
 
 // methods
 	bool changeFoV(float);
+	bool changeZoom(float);
 };
 

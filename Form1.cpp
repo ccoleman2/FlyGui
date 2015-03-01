@@ -54,9 +54,9 @@ System::Void flyGui::Form1::button2_Click(System::Object^  sender, System::Event
 
 	bool success = program.changeFoV(newFoV);
 	
-	if (success == 0)
+	if (!success)
 	{
-		MessageBox::Show("4: Did not write FOV successfully. GetLastError() produced: " + GetLastError().ToString());
+		MessageBox::Show("Did not write FOV successfully");
 		return;
 	}
 }
@@ -66,50 +66,19 @@ System::Void flyGui::Form1::button3_Click(System::Object^  sender, System::Event
 {
 	if (program.attached == FALSE)
 	{
-		MessageBox::Show("Please attach to WoW first");
+		MessageBox::Show("Please attach to the process first");
 		return;
 	}
-//
-//	DWORD WoWbase_PLUS_D5153C;
-//	void * stepA = new DWORD;
-//	void * CameraPtr = new DWORD;
-//	void * stepC = new DWORD;
-//
-//	WoWbase_PLUS_D5153C = WoWbaseaddress + 13964604; // 13964604 is decimal notation of D5153C
-//
-//	int goodA = ReadProcessMemory(actualWoWhandle, (void*)WoWbase_PLUS_D5153C, &stepA, 4, 0);
-//	error = GetLastError();
-//	if (goodA == 0)
-//	{
-//		MessageBox::Show("Step A: ReadProcessMemory() failed. GetLastError() produced: " + error);
-//		return;
-//	}
-//
-//	stepA = (char*)stepA + 0x8150; // Adds 0x8150 to pointer
-//	int goodB = ReadProcessMemory(actualWoWhandle, stepA, &CameraPtr, 4, 0);
-//	error = GetLastError();
-//	if (goodB == 0)
-//	{
-//		MessageBox::Show("Step B: ReadProcessMemory() failed. GetLastError() produced: " + error);
-//		return;
-//	}
-//
-//	CameraPtr = (char*)CameraPtr + 0x38; // Adds 0x38 to pointer
-//
-//	void * firstV = new DWORD; // 108 - 38 = D0 ::: 0x108 from CGCamera pointer
-//	void * secondV = new DWORD; // D4 relative to FirstV
-//	firstV = (char*)CameraPtr + 0xD0;
-//	secondV = (char*)firstV + 0xD4;
-//	float newZoom = (float)Convert::ToDouble(this->textBox2->Text);
-//	int success1 = WriteProcessMemory(actualWoWhandle, firstV, &newZoom, 4, 0);
-//	int error1 = GetLastError();
-//	int success2 = WriteProcessMemory(actualWoWhandle, secondV, &newZoom, 4, 0);
-//	int error2 = GetLastError();
-//	if (success1 == 0 || success2 == 0)
-//	{
-//		MessageBox::Show("Did not write zoom successfully. GetLastError() produced: " + error1 + " + " + error2);
-//		return;
-//	}
+
+	float newZoom = (float)Convert::ToDouble(this->textBox2->Text);
+	
+	bool success = program.changeZoom(newZoom);
+
+	if (!success)
+	{
+		MessageBox::Show("Did not write zoom successfully");
+		return;
+	}
 }
 
 // TERRAIN
