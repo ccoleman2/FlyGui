@@ -6,7 +6,7 @@
 using namespace std;
 
 WoW program;
-int userAction;
+int userAction = 0;
 
 // ATTACH
 System::Void flyGui::Form1::button1_Click(System::Object^  sender, System::EventArgs^  e)
@@ -44,45 +44,16 @@ System::Void flyGui::Form1::button1_Click(System::Object^  sender, System::Event
 //// FOV
 System::Void flyGui::Form1::button2_Click(System::Object^  sender, System::EventArgs^  e)
 {
-
 	if (program.attached == FALSE)
 	{
 		MessageBox::Show("Please attach to the process first");
 		return;
 	}
 
-	DWORD WoWbase_PLUS_D5153C;
-	void * stepA = new DWORD;
-	void * CameraPtr = new DWORD;
-	void * stepC = new DWORD;
-
-	WoWbase_PLUS_D5153C = program.getBaseAddress() + 14885016; // 14885016 is decimal notation of E32098
-
-	int goodA = ReadProcessMemory(program.getProgramHandle(), (void*)WoWbase_PLUS_D5153C, &stepA, 4, 0);
-	if (goodA == 0)
-	{
-		MessageBox::Show("Step A: ReadProcessMemory() failed. GetLastError() produced: " + GetLastError().ToString());
-		return;
-	}
-
-	stepA = (char*)stepA + 0x7610; // Adds 0x7610 to pointer
-	int goodB = ReadProcessMemory(program.getProgramHandle(), stepA, &CameraPtr, 4, 0);
-	if (goodB == 0)
-	{
-		MessageBox::Show("Step B: ReadProcessMemory() failed. GetLastError() produced: " + GetLastError().ToString());
-		return;
-	}
-
-	CameraPtr = (char*)CameraPtr + 0x38; // Adds 0x38 to pointer
-	int goodC = ReadProcessMemory(program.getProgramHandle(), CameraPtr, &stepC, 4, 0);
-	if (goodC == 0)
-	{
-		MessageBox::Show("Step C: ReadProcessMemory() failed. GetLastError() produced: " + GetLastError().ToString());
-		return;
-	}
-
 	float newFoV = (float)Convert::ToDouble(this->textBox1->Text);
-	int success = WriteProcessMemory(program.getProgramHandle(), CameraPtr, &newFoV, 4, 0);
+
+	bool success = program.changeFoV(newFoV);
+	
 	if (success == 0)
 	{
 		MessageBox::Show("4: Did not write FOV successfully. GetLastError() produced: " + GetLastError().ToString());

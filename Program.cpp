@@ -1,17 +1,22 @@
 #include "stdafx.h"
 #include "Program.h"
 
-// CONSTRUCTORS //////////////////////////////////////////////////////////////////////////////
 Program::Program()
 {
+	attached = FALSE;
 }
 
 Program::Program(wstring name){
 	this->name = name;
+	attached = FALSE;
 }
 
 void Program::setName(wstring name){
 	this->name = name;
+}
+
+void Program::setAttached(bool attached){
+	this->attached = attached;
 }
 
 wstring Program::getName(){
@@ -96,8 +101,4 @@ bool Program::setDebugPrivilegesEnabled(){
 	}
 	debugPrivilegesEnabled = true;
 	return true;
-}
-
-void Program::setAttached(bool attached){
-	this->attached = attached;
 }

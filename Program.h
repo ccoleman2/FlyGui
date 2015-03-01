@@ -11,20 +11,20 @@ public:
 
 // fields
 	wstring name;
-	DWORD processId;
-	bool debugPrivilegesEnabled;
 	bool attached;
+	bool debugPrivilegesEnabled;
+	DWORD processId;
 	DWORD baseAddress;
 	HWND windowHandle;
 	HANDLE programHandle;
 
 // methods
 	void setName(wstring);
+	void setAttached(bool);
 	wstring getName();
 	DWORD getBaseAddress();
 	HANDLE getProgramHandle();
 	bool setDebugPrivilegesEnabled();
-	void setAttached(bool);
 
 };
 
